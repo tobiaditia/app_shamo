@@ -1,97 +1,186 @@
 import 'package:app_shamo/theme.dart';
+import 'package:app_shamo/widgets/product_card.dart';
+import 'package:app_shamo/widgets/product_tile.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int currentIndex = 0;
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Widget cardButton() {
-      return FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/choose-weight');
-        },
-        backgroundColor: secondaryColor,
-        child: Image.asset(
-          "assets/icon_nav_cart.png",
-          width: 20,
+    Widget header() {
+      return Container(
+        margin: EdgeInsets.all(defaultMargin),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hallo Tobi',
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 24,
+                      fontWeight: semiBold,
+                    ),
+                  ),
+                  Text(
+                    '@tobi',
+                    style: subtitleTextStyle.copyWith(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage('assets/icon_profile.png'),
+                ),
+              ),
+            ),
+          ],
         ),
       );
     }
 
-    Widget customBottomNav() {
-      return ClipRRect(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        child: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          notchMargin: 10,
-          clipBehavior: Clip.antiAlias,
-          child: BottomNavigationBar(
-              currentIndex: currentIndex,
-              onTap: (value) {
-                setState(() {
-                  currentIndex = value;
-                });
-              },
-              backgroundColor: bgColor4,
-              type: BottomNavigationBarType.fixed,
-              items: [
-                BottomNavigationBarItem(
-                    icon: Container(
-                      margin: EdgeInsets.only(top: 15, bottom: 0),
-                      child: Icon(
-                        Icons.laptop,
-                        size: 21,
-                        color: currentIndex == 0
-                            ? primaryColor
-                            : Color(0xff808191),
-                      ),
-                    ),
-                    label: ''),
-                BottomNavigationBarItem(
-                    icon: Container(
-                      margin: EdgeInsets.only(top: 15, bottom: 0),
-                      child: Icon(
-                        Icons.contact_support,
-                        size: 21,
-                        color: currentIndex == 1
-                            ? primaryColor
-                            : Color(0xff808191),
-                      ),
-                    ),
-                    label: '')
-              ]),
+    Widget categories() {
+      return Container(
+        margin: EdgeInsets.only(top: defaultMargin),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                margin: EdgeInsets.only(right: 16),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: primaryColor),
+                child: Text(
+                  'All Shoes',
+                  style: primaryTextStyle.copyWith(
+                      fontSize: 13, fontWeight: medium),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                margin: EdgeInsets.only(right: 16),
+                decoration: BoxDecoration(
+                    border: Border.all(color: subtitleColor),
+                    borderRadius: BorderRadius.circular(12),
+                    color: transparentColor),
+                child: Text(
+                  'Running',
+                  style: subtitleTextStyle.copyWith(
+                      fontSize: 13, fontWeight: medium),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                margin: EdgeInsets.only(right: 16),
+                decoration: BoxDecoration(
+                    border: Border.all(color: subtitleColor),
+                    borderRadius: BorderRadius.circular(12),
+                    color: transparentColor),
+                child: Text(
+                  'Running',
+                  style: subtitleTextStyle.copyWith(
+                      fontSize: 13, fontWeight: medium),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                margin: EdgeInsets.only(right: 16),
+                decoration: BoxDecoration(
+                    border: Border.all(color: subtitleColor),
+                    borderRadius: BorderRadius.circular(12),
+                    color: transparentColor),
+                child: Text(
+                  'Running',
+                  style: subtitleTextStyle.copyWith(
+                      fontSize: 13, fontWeight: medium),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                    border: Border.all(color: subtitleColor),
+                    borderRadius: BorderRadius.circular(12),
+                    color: transparentColor),
+                child: Text(
+                  'Running',
+                  style: subtitleTextStyle.copyWith(
+                      fontSize: 13, fontWeight: medium),
+                ),
+              )
+            ],
+          ),
         ),
       );
     }
 
-    // Widget body() {
-    //   switch (currentIndex) {
-    //     case 0:
-    //       return LaptopPage();
-    //       break;
-    //     case 1:
-    //       return RequestPage();
-    //       break;
-    //     default:
-    //       return LaptopPage();
-    //   }
-    // }
+    Widget popularProductTitle() {
+      return Container(
+        margin: EdgeInsets.only(
+            top: defaultMargin, right: defaultMargin, left: defaultMargin),
+        child: Text("Popular",
+            style:
+                primaryTextStyle.copyWith(fontSize: 22, fontWeight: semiBold)),
+      );
+    }
 
-    return Scaffold(
-      backgroundColor: bgColor1,
-      floatingActionButton: cardButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: customBottomNav(),
-      body: Center(
-        // child: body(),
-        child: Text("s"),
-      ),
-    );
+    Widget popularProduct() {
+      return Container(
+        margin: EdgeInsets.only(top: 14),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+          child: Row(
+            children: [
+              ProductCard(),
+              ProductCard(),
+              ProductCard(),
+              ProductCard(),
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget newArrivalsTitle() {
+      return Container(
+        margin: EdgeInsets.only(
+            top: defaultMargin, right: defaultMargin, left: defaultMargin),
+        child: Text("New Arrivals",
+            style:
+                primaryTextStyle.copyWith(fontSize: 22, fontWeight: semiBold)),
+      );
+    }
+
+    Widget newArrivals() {
+      return Container(
+        margin: EdgeInsets.only(top: 14),
+        child: Column(
+            children: [
+              ProducTile(),
+              ProducTile(),
+              ProducTile(),
+            ],
+        ),
+      );
+    }
+
+    return ListView(children: [
+      header(),
+      categories(),
+      popularProductTitle(),
+      popularProduct(),
+      newArrivalsTitle(),
+      newArrivals(),
+    ]);
   }
 }

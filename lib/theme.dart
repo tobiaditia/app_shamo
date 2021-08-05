@@ -12,6 +12,8 @@ Color bgColor4 = Color(0xff252836);
 Color primaryTextColor = Color(0xffE1E1E1);
 Color secondaryTextColor = Color(0xff999999);
 Color subtitleColor = Color(0xff504F5E);
+Color transparentColor = Colors.transparent;
+Color blackColor = Color(0xff2e2e2e);
 
 TextStyle primaryTextStyle = GoogleFonts.poppins(color: primaryTextColor);
 TextStyle secondaryTextStyle = GoogleFonts.poppins(color: secondaryTextColor);
@@ -20,6 +22,7 @@ TextStyle subtitleTextStyle = GoogleFonts.poppins(
   color: subtitleColor,
 );
 TextStyle purpleTextStyle = GoogleFonts.poppins(color: primaryColor);
+TextStyle blackTextStyle = GoogleFonts.poppins(color: blackColor);
 
 FontWeight light = FontWeight.w300;
 FontWeight regular = FontWeight.w400;
