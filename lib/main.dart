@@ -1,5 +1,7 @@
 import 'package:app_shamo/pages/home/chat_detail_page.dart';
+import 'package:app_shamo/pages/home/edit_profile.dart';
 import 'package:app_shamo/pages/home/main_page.dart';
+import 'package:app_shamo/pages/home/product_page.dart';
 import 'package:app_shamo/pages/sign_in_page.dart';
 import 'package:app_shamo/pages/sign_up_page.dart';
 import 'package:app_shamo/pages/splash_page.dart';
@@ -22,6 +24,8 @@ class MyApp extends StatelessWidget {
         '/sign-up': (context) => SignUpPage(),
         '/home': (context) => MainPage(),
         '/detail-chat': (context) => DetailChatPage(),
+        '/edit-profile': (context) => EditProfilePage(),
+        '/product': (context) => ProductPage(),
       },
     );
   }
