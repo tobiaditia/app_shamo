@@ -1,9 +1,56 @@
+import 'package:app_shamo/providers/auth_provider.dart';
 import 'package:app_shamo/theme.dart';
+import 'package:app_shamo/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  TextEditingController nameController = TextEditingController(text: '');
+
+  TextEditingController usernameController = TextEditingController(text: '');
+
+  TextEditingController emailController = TextEditingController(text: '');
+
+  TextEditingController passwordController = TextEditingController(text: '');
+
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
+    handleSignUp() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      if (await authProvider.register(
+          nameController.text,
+          usernameController.text,
+          emailController.text,
+          passwordController.text)) {
+        Navigator.pushNamed(context, '/home');
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: Text(
+              'Register Failed!',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    }
+
     Widget header() {
       return Container(
         margin: EdgeInsets.only(top: defaultMargin),
@@ -58,6 +105,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                     Expanded(
                         child: TextFormField(
+                      controller: nameController,
                       decoration: InputDecoration.collapsed(
                           hintText: 'Your Full Name',
                           hintStyle: subtitleTextStyle),
@@ -103,6 +151,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                     Expanded(
                         child: TextFormField(
+                      controller: usernameController,
                       decoration: InputDecoration.collapsed(
                           hintText: 'Your Username',
                           hintStyle: subtitleTextStyle),
@@ -148,6 +197,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                     Expanded(
                         child: TextFormField(
+                      controller: emailController,
                       decoration: InputDecoration.collapsed(
                           hintText: 'Your Email Address',
                           hintStyle: subtitleTextStyle),
@@ -193,6 +243,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                     Expanded(
                         child: TextFormField(
+                      controller: passwordController,
                       decoration: InputDecoration.collapsed(
                           hintText: 'Your Password',
                           hintStyle: subtitleTextStyle),
@@ -209,22 +260,25 @@ class SignUpPage extends StatelessWidget {
     }
 
     Widget signInButton() {
-      return Container(
-        width: double.infinity,
-        height: 50,
-        margin: EdgeInsets.only(top: 30),
-        child: TextButton(
-          onPressed: () {},
-          child: Text(
-            "Sign Up",
-            style: primaryTextStyle.copyWith(fontSize: 16, fontWeight: medium),
-          ),
-          style: TextButton.styleFrom(
-              backgroundColor: primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12))),
-        ),
-      );
+      return isLoading
+          ? LoadingButton()
+          : Container(
+              width: double.infinity,
+              height: 50,
+              margin: EdgeInsets.only(top: 30),
+              child: TextButton(
+                onPressed: handleSignUp,
+                child: Text(
+                  "Sign Up",
+                  style: primaryTextStyle.copyWith(
+                      fontSize: 16, fontWeight: medium),
+                ),
+                style: TextButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12))),
+              ),
+            );
     }
 
     Widget footer() {

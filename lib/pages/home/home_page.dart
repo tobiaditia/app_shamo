@@ -1,11 +1,18 @@
+import 'package:app_shamo/models/user_model.dart';
+import 'package:app_shamo/providers/auth_provider.dart';
 import 'package:app_shamo/theme.dart';
 import 'package:app_shamo/widgets/product_card.dart';
 import 'package:app_shamo/widgets/product_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
+    UserModel user = authProvider.user;
+
     Widget header() {
       return Container(
         margin: EdgeInsets.all(defaultMargin),
@@ -16,14 +23,14 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hallo Tobi',
+                    'Hallo ${user.name}',
                     style: primaryTextStyle.copyWith(
                       fontSize: 24,
                       fontWeight: semiBold,
                     ),
                   ),
                   Text(
-                    '@tobi',
+                    user.username,
                     style: subtitleTextStyle.copyWith(
                       fontSize: 16,
                     ),
@@ -37,7 +44,7 @@ class HomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                  image: AssetImage('assets/icon_profile.png'),
+                  image: NetworkImage(user.profilePhotoUrl),
                 ),
               ),
             ),
@@ -165,11 +172,11 @@ class HomePage extends StatelessWidget {
       return Container(
         margin: EdgeInsets.only(top: 14),
         child: Column(
-            children: [
-              ProducTile(),
-              ProducTile(),
-              ProducTile(),
-            ],
+          children: [
+            ProducTile(),
+            ProducTile(),
+            ProducTile(),
+          ],
         ),
       );
     }

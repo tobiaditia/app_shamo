@@ -10,6 +10,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   int currentIndex = 0;
+  bool isWishlist = false;
   @override
   Widget build(BuildContext context) {
     List images = [
@@ -143,9 +144,36 @@ class _ProductPageState extends State<ProductPage> {
                       ],
                     ),
                   ),
-                  Image.asset(
-                    'assets/button_whislist_gray.png',
-                    width: 46,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isWishlist = !isWishlist;
+                        if (isWishlist) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: secondaryColor,
+                              content: Text(
+                                'Has been added to the Wishlist',
+                                textAlign: TextAlign.center,
+                              )));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: alertColor,
+                              content: Text(
+                                'Has been removed from the Wishlist',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        }
+                      });
+                    },
+                    child: Image.asset(
+                      isWishlist
+                          ? 'assets/button_whislist_blue.png'
+                          : 'assets/button_whislist_gray.png',
+                      width: 46,
+                    ),
                   )
                 ],
               ),
