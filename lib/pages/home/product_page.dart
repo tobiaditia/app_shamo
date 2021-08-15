@@ -1,9 +1,16 @@
+import 'package:app_shamo/models/product_model.dart';
+import 'package:app_shamo/providers/product_provider.dart';
 import 'package:app_shamo/theme.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
+  final ProductModel product;
+
+  ProductPage(this.product);
+
   @override
   _ProductPageState createState() => _ProductPageState();
 }
@@ -13,25 +20,10 @@ class _ProductPageState extends State<ProductPage> {
   bool isWishlist = false;
   @override
   Widget build(BuildContext context) {
-    List images = [
-      'assets/image_shoes.png',
-      'assets/image_shoes.png',
-      'assets/image_shoes.png'
-    ];
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
-    List familiarImages = [
-      'assets/image_shoes.png',
-      'assets/image_shoes.png',
-      'assets/image_shoes.png',
-      'assets/image_shoes.png',
-      'assets/image_shoes.png',
-      'assets/image_shoes.png',
-      'assets/image_shoes.png',
-      'assets/image_shoes.png',
-      'assets/image_shoes.png'
-    ];
-
-    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(amount: 500000);
+    FlutterMoneyFormatter fmf =
+        FlutterMoneyFormatter(amount: widget.product.price);
 
     MoneyFormatterOutput fo = fmf.output;
 
@@ -53,7 +45,7 @@ class _ProductPageState extends State<ProductPage> {
         height: 54,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
-            image: DecorationImage(image: AssetImage(imageUrl))),
+            image: DecorationImage(image: NetworkImage(imageUrl))),
       );
     }
 
@@ -81,9 +73,9 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ),
           CarouselSlider(
-              items: images
-                  .map((image) => Image.asset(
-                        image,
+              items: widget.product.galleries
+                  .map((image) => Image.network(
+                        image.url,
                         width: MediaQuery.of(context).size.width,
                         height: 310,
                         fit: BoxFit.cover,
@@ -101,7 +93,7 @@ class _ProductPageState extends State<ProductPage> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: images.map((e) {
+            children: widget.product.galleries.map((e) {
               index++;
               return indicator(index);
             }).toList(),
@@ -133,12 +125,12 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Court Shoes 2.0",
+                          widget.product.name,
                           style: primaryTextStyle.copyWith(
                               fontSize: 18, fontWeight: semiBold),
                         ),
                         Text(
-                          "Court",
+                          widget.product.category.name,
                           style: secondaryTextStyle.copyWith(fontSize: 12),
                         ),
                       ],
@@ -217,7 +209,7 @@ class _ProductPageState extends State<ProductPage> {
                     height: 12,
                   ),
                   Text(
-                    "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem",
+                    widget.product.description,
                     style: subtitleTextStyle.copyWith(fontWeight: light),
                     textAlign: TextAlign.justify,
                   )
@@ -243,7 +235,7 @@ class _ProductPageState extends State<ProductPage> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: familiarImages.map((imageUrl) {
+                      children: productProvider.products.map((product) {
                         indexFamiliarImages++;
                         return Container(
                             margin: EdgeInsets.only(
@@ -251,10 +243,11 @@ class _ProductPageState extends State<ProductPage> {
                                     ? defaultMargin
                                     : 0,
                                 right: indexFamiliarImages ==
-                                        familiarImages.length - 1
+                                        productProvider.products.length - 1
                                     ? 14
                                     : 0),
-                            child: familiarImagesWidget(imageUrl));
+                            child:
+                                familiarImagesWidget(product.galleries[0].url));
                       }).toList(),
                     ),
                   )

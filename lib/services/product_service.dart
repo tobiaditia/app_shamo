@@ -11,15 +11,22 @@ class ProductService {
     var headers = {'Content-Type': 'application/json'};
 
     var response = await http.get(url, headers: headers);
-    print(response.body);
+
+    print('service');
+
+    JsonDecoder decoder = JsonDecoder();
+    JsonEncoder encoder = JsonEncoder.withIndent('  ');
+
+    void prettyPrintJson(String input) {
+      var object = decoder.convert(input);
+      var prettyString = encoder.convert(object);
+      prettyString.split('\n').forEach((element) => print(element));
+    }
+
+    prettyPrintJson(response.body);
 
     if (response.statusCode == 200) {
       List data = jsonDecode(response.body)['data']['data'];
-      // List<ProductModel> products = [];
-
-      // for (var item in data) {
-      //   products.add(ProductModel.fromJson(item));
-      // }
 
       List<ProductModel> products =
           data.map((product) => ProductModel.fromJson(product)).toList();

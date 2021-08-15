@@ -6,7 +6,6 @@ class ProductModel {
   String name;
   double price;
   String description;
-  String tags;
   CategoryModel category;
   DateTime createdAt;
   DateTime upatedAt;
@@ -17,7 +16,6 @@ class ProductModel {
       this.name,
       this.price,
       this.description,
-      this.tags,
       this.category,
       this.createdAt,
       this.upatedAt,
@@ -28,13 +26,14 @@ class ProductModel {
     name = json['name'];
     price = double.parse(json['price'].toString());
     description = json['description'];
-    tags = json['tags'];
     category = CategoryModel.fromJson(json['category']);
     galleries = json['galleries']
         .map<GalleryModel>((gallery) => GalleryModel.fromJson(gallery))
         .toList();
-    createdAt = DateTime.parse(json['created_at']);
-    upatedAt = DateTime.parse(json['upated_at']);
+    createdAt =
+        json['created_at'] != null ? DateTime.parse(json['created_at']) : null;
+    upatedAt =
+        json['upated_at'] != null ? DateTime.parse(json['upated_at']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -43,7 +42,6 @@ class ProductModel {
       'name': name,
       'price': price,
       'description': description,
-      'tags': tags,
       'category': category.toJson(),
       'galleries': galleries.map((gallery) => gallery.toJson()).toList(),
       'created_at': createdAt.toString(),

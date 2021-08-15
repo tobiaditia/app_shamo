@@ -1,5 +1,6 @@
 import 'package:app_shamo/models/user_model.dart';
 import 'package:app_shamo/providers/auth_provider.dart';
+import 'package:app_shamo/providers/product_provider.dart';
 import 'package:app_shamo/theme.dart';
 import 'package:app_shamo/widgets/product_card.dart';
 import 'package:app_shamo/widgets/product_tile.dart';
@@ -10,6 +11,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     UserModel user = authProvider.user;
 
@@ -147,12 +149,9 @@ class HomePage extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           padding: EdgeInsets.symmetric(horizontal: defaultMargin),
           child: Row(
-            children: [
-              ProductCard(),
-              ProductCard(),
-              ProductCard(),
-              ProductCard(),
-            ],
+            children: productProvider.products
+                .map((product) => ProductCard(product))
+                .toList(),
           ),
         ),
       );
@@ -172,11 +171,9 @@ class HomePage extends StatelessWidget {
       return Container(
         margin: EdgeInsets.only(top: 14),
         child: Column(
-          children: [
-            ProducTile(),
-            ProducTile(),
-            ProducTile(),
-          ],
+          children: productProvider.products
+              .map((product) => ProductTile(product))
+              .toList(),
         ),
       );
     }

@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:app_shamo/providers/product_provider.dart';
-import 'package:app_shamo/theme.dart';
 import 'package:app_shamo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +11,6 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    // TODO: implement initState
-
     getInit();
     super.initState();
   }
