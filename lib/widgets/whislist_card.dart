@@ -1,9 +1,17 @@
+import 'package:app_shamo/models/product_model.dart';
+import 'package:app_shamo/providers/wishlist_provider.dart';
 import 'package:app_shamo/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WishlistCard extends StatelessWidget {
+  final ProductModel product;
+  WishlistCard(this.product);
+
   @override
   Widget build(BuildContext context) {
+    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+
     return Container(
       margin: EdgeInsets.only(top: 20),
       padding: EdgeInsets.only(top: 10, left: 12, bottom: 14, right: 20),
@@ -15,8 +23,8 @@ class WishlistCard extends StatelessWidget {
         children: [
           ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                'assets/image_shoes.png',
+              child: Image.network(
+                product.galleries[0].url,
                 width: 60,
               )),
           SizedBox(
@@ -27,7 +35,7 @@ class WishlistCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Terrex Urban Low",
+                  product.name,
                   style: primaryTextStyle.copyWith(fontWeight: semiBold),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -35,15 +43,20 @@ class WishlistCard extends StatelessWidget {
                   height: 8,
                 ),
                 Text(
-                  "Rp. 500.000",
+                  product.price.toString(),
                   style: priceTextStyle,
                 ),
               ],
             ),
           ),
-          Image.asset(
-            'assets/button_wishlist_blue.png',
-            width: 24,
+          GestureDetector(
+            onTap: () {
+              wishlistProvider.setProduct(product);
+            },
+            child: Image.asset(
+              'assets/button_wishlist_blue.png',
+              width: 24,
+            ),
           )
         ],
       ),

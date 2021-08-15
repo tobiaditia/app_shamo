@@ -1,5 +1,6 @@
 import 'package:app_shamo/models/product_model.dart';
 import 'package:app_shamo/providers/product_provider.dart';
+import 'package:app_shamo/providers/wishlist_provider.dart';
 import 'package:app_shamo/theme.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,10 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   int currentIndex = 0;
-  bool isWishlist = false;
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
 
     FlutterMoneyFormatter fmf =
         FlutterMoneyFormatter(amount: widget.product.price);
@@ -138,32 +139,30 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        isWishlist = !isWishlist;
-                        if (isWishlist) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: secondaryColor,
-                              content: Text(
-                                'Has been added to the Wishlist',
-                                textAlign: TextAlign.center,
-                              )));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: alertColor,
-                              content: Text(
-                                'Has been removed from the Wishlist',
-                                textAlign: TextAlign.center,
-                              ),
+                      wishlistProvider.setProduct(widget.product);
+                      if (wishlistProvider.isOnWishlist(widget.product)) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: secondaryColor,
+                            content: Text(
+                              'Has been added to the Wishlist',
+                              textAlign: TextAlign.center,
+                            )));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: alertColor,
+                            content: Text(
+                              'Has been removed from the Wishlist',
+                              textAlign: TextAlign.center,
                             ),
-                          );
-                        }
-                      });
+                          ),
+                        );
+                      }
                     },
                     child: Image.asset(
-                      isWishlist
-                          ? 'assets/button_whislist_blue.png'
-                          : 'assets/button_whislist_gray.png',
+                      wishlistProvider.isOnWishlist(widget.product)
+                          ? 'assets/button_wishlist_blue.png'
+                          : 'assets/button_wishlist_gray.png',
                       width: 46,
                     ),
                   )
