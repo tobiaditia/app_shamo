@@ -12,19 +12,6 @@ class ProductService {
 
     var response = await http.get(url, headers: headers);
 
-    print('service');
-
-    JsonDecoder decoder = JsonDecoder();
-    JsonEncoder encoder = JsonEncoder.withIndent('  ');
-
-    void prettyPrintJson(String input) {
-      var object = decoder.convert(input);
-      var prettyString = encoder.convert(object);
-      prettyString.split('\n').forEach((element) => print(element));
-    }
-
-    prettyPrintJson(response.body);
-
     if (response.statusCode == 200) {
       List data = jsonDecode(response.body)['data']['data'];
 
