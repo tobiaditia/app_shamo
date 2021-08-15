@@ -1,10 +1,14 @@
+import 'package:app_shamo/providers/cart_provider.dart';
 import 'package:app_shamo/theme.dart';
 import 'package:app_shamo/widgets/cart_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+
     Widget header() {
       return AppBar(
         backgroundColor: bgColor1,
@@ -66,20 +70,12 @@ class CartPage extends StatelessWidget {
     }
 
     Widget content() {
-      return ListView(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        children: [
-          SizedBox(
-            height: 15,
-          ),
-          CartCard(),
-          CartCard(),
-          CartCard(),
-          CartCard(),
-          SizedBox(
-            height: 15,
-          ),
-        ],
+      return Container(
+        margin: EdgeInsets.symmetric(vertical: 15),
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+          children: cartProvider.carts.map((e) => CartCard(e)).toList(),
+        ),
       );
     }
 
@@ -99,7 +95,7 @@ class CartPage extends StatelessWidget {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    "Rp. 500.000",
+                    cartProvider.totalPrice().toString(),
                     style:
                         priceTextStyle.copyWith(fontSize: 16, fontWeight: bold),
                   )
@@ -147,8 +143,9 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: bgColor3,
       appBar: header(),
-      body: content(),
-      bottomNavigationBar: customBottom(),
+      body: cartProvider.carts.isEmpty ? emptyCart() : content(),
+      bottomNavigationBar:
+          cartProvider.carts.isEmpty ? SizedBox() : customBottom(),
     );
   }
 }
